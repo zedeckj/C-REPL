@@ -72,9 +72,7 @@ The REPL can be closed with `exit(int)`, a return statement, or `quit()`.
 
 ```
 >> char * str = 0; // or bad malloc
-
 >> if (!str) quit();  
-
 
 ```
 
@@ -94,38 +92,25 @@ int foo(int x) { return x * 2; }
 To get around this, the preprocessor is extended with the directive `#top`
 
 ```
-
 >> #top int add1(int x) { return x + 1; }
-
 >> (add1(2));
-
 3
-
 >> 
-
 ```
 
 Other preprocessor directives are put outside of main as well, so `#include` works as one would hope.
 
 ```
 >> (LLONG_MAX);
-
 <stdin>:6:2: error: use of undeclared identifier 'LLONG_MAX'
-
 (LLONG_MAX);
-
  ^
-
 1 error generated.
-
 ```
 
 ```
 >> #include <limits.h>
-
 >> (LLONG_MAX);  
-
 9223372036854775807
-
 >>
 ```

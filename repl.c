@@ -5,16 +5,11 @@
 
 
 #define PROLOGUE "#include \"repl.h\"\n\nint main(){\n"
+#define run_it() (system("./a.out"), system("rm a.out"))
 
 bool should_print(char * line) {
 	size_t l = strlen(line);
-	return (line[0] == '(' && line[l - 2] == ')');
-}
-
-void refactor_printed(char *line) {
-	size_t len = strlen(line);
-	line[len] = ';';
-	line[len + 1] = '\n';
+	return (line[0] == '(' && line[l - 3] == ')');
 }
 
 bool compile(char * prog) {
@@ -27,15 +22,14 @@ void write_file(char * prog, char * last_line) {
 	char new_prog[PROG_SIZE];
 	bool rerun;	
 	rerun = should_print(last_line);
-	sprintf(new_prog, PROLOGUE "\n%s%s;}", prog, last_line);
+	sprintf(new_prog, PROLOGUE "\n%s%s}", prog, last_line);
 	if (compile(new_prog)) {
 		if (rerun) {
-			sprintf(new_prog, PROLOGUE "\n%srepl_print%s;}", prog, last_line);
-			refactor_printed(last_line);	
-			if (compile(new_prog)) system("./a.out");	
+			sprintf(new_prog, PROLOGUE "\n%srepl_print%s}", prog, last_line);
+			if (compile(new_prog)) run_it();	
 			else goto err;
 		}
-		system("rm a.out");
+		else run_it();
 		strcpy(prog + strlen(prog), last_line);
 		return;
 	}

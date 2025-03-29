@@ -80,7 +80,8 @@ The REPL can be closed with `exit(int)`, a return statement, or `quit()`.
 
 A plain keyboard interrupt works as well.
 
-Function defintions are not allowed, since everything is run in `main`
+
+By default, everything is run in the `main` function. This leads to defining top level declarations causing an error.
 
 ```
 >> int foo(int x) { return x * 2; }                                                                                                                                                                         
@@ -90,3 +91,41 @@ int foo(int x) { return x * 2; }
 1 error generated.                                                                                                                                                                                  
 ```
 
+To get around this, the preprocessor is extended with the directive `#top`
+
+```
+
+>> #top int add1(int x) { return x + 1; }
+
+>> (add1(2));
+
+3
+
+>> 
+
+```
+
+Other preprocessor directives are put outside of main as well, so `#include` works as one would hope.
+
+```
+>> (LLONG_MAX);
+
+<stdin>:6:2: error: use of undeclared identifier 'LLONG_MAX'
+
+(LLONG_MAX);
+
+ ^
+
+1 error generated.
+
+```
+
+```
+>> #include <limits.h>
+
+>> (LLONG_MAX);  
+
+9223372036854775807
+
+>>
+```

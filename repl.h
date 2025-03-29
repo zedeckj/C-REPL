@@ -11,6 +11,9 @@
 #include <signal.h> 
 
 #define CONTINUE 206
+#define ENDP "\nreturn CONTINUE;}"
+#define TOPMACRO "#top"
+
 
 #define repl_print(X) _Generic((X), int: print_int, \
                               default: print_pointer, \

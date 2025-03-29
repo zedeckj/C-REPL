@@ -18,7 +18,7 @@ bool compile(char * prog) {
 	return !pclose(stream);
 }
 
-void write_file(char * prog, char * last_line) {
+void process_line(char * prog, char * last_line) {
 	char new_prog[PROG_SIZE];
 	bool rerun;	
 	rerun = should_print(last_line);
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 		printf(">> ");
 		memset(buffer, 0, BUFFER_SIZE);
 		if (fgets(buffer, BUFFER_SIZE, stdin)){
-			write_file(prog, buffer);
+			process_line(prog, buffer);
 		}
 	} while (!feof(stdin));
 	return 0;

@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 	char body[PROG_SIZE] = {0};
 	char header[HEADER_SIZE] = {0};
 	do {
-		printf(">> ");
+		printf("\033[38;5;87m>>\033[0m ");
 		memset(buffer, 0, BUFFER_SIZE);
 		if (fgets(buffer, BUFFER_SIZE, stdin)){
 			process_line(header, body, buffer);

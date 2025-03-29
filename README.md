@@ -23,7 +23,6 @@ Lines in the form of `(<expression>);` are printed without having to call any IO
 >> char * str = "Works for strings too!";                                                                                                                                                                   
 >> (str);                                                                                                                                                                                                   
 Works for strings too!
-
 >>
 ```
 

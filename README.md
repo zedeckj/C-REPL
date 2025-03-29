@@ -26,6 +26,24 @@ Works for strings too!
 >>
 ```
 
+This expression form is still compiled normally, with side effects and mutation occuring as expected:
+
+```
+>> int x = 0;                                                                                                                                                                                               
+>> (x = 1);                                                                                                                                                                                                 
+1                                                                                                                                                                                                           
+>> (x);                                                                                                                                                                                                     
+1                                                                                                                                                                                                           
+>>           
+```
+
+```
+>> (printf("What does printf return anyways?\n"));                                                                                                                                                          
+What does printf return anyways?                                                                                                                                                                            
+33                                                                                                                                                                                                          
+>>      
+```
+
 Compilation errors gracefully exit the REPL without anything exploding:
 
 ```

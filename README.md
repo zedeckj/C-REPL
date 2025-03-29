@@ -22,7 +22,9 @@ Lines in the form of `(<expression>);` are printed without having to call any IO
 61.200001                                                                                                                                                                                                   
 >> char * str = "Works for strings too!";                                                                                                                                                                   
 >> (str);                                                                                                                                                                                                   
-Works for strings too!     
+Works for strings too!
+
+>>
 ```
 
 Compilation errors gracefully exit the REPL without anything exploding:

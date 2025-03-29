@@ -50,4 +50,13 @@ int x = 3;
 1 error generated.        
 ```
 
+Function defintions are not allowed, since everything is run in `main`
+
+```
+>> int foo(int x) { return x * 2; }                                                                                                                                                                         
+<stdin>:5:16: error: function definition is not allowed here                                                                                                                                                
+int foo(int x) { return x * 2; }                                                                                                                                                                            
+               ^                                                                                                                                                                                            
+1 error generated.                                                                                                                                                                                  
+```
 

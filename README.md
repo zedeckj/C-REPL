@@ -68,6 +68,18 @@ int x = 3;
 1 error generated.        
 ```
 
+The REPL can be closed with `exit(int)`, a return statement, or `quit()`. 
+
+```
+>> char * str = 0; // or bad malloc
+
+>> if (!str) quit();  
+
+
+```
+
+A plain keyboard interrupt works as well.
+
 Function defintions are not allowed, since everything is run in `main`
 
 ```

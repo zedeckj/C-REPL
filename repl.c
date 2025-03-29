@@ -13,23 +13,48 @@ bool should_print(char * line) {
 }
 
 bool compile(char * prog) {
-	FILE * stream = popen("cc -x c - -Wno-unused-value", "w");
+	FILE * stream = popen("cc -x c - -Wno-unused-value -Wno-int-conversion", "w");
 	fprintf(stream, "%s", prog);
 	return !pclose(stream);
 }
+
+void run() {
+	pid_t pid = fork();
+	if (pid == 0) {
+		char *args[] = {"./a.out", 0};
+		execv(args[0], args);
+	}
+	else if (pid > 0) {
+		int status;
+		if (waitpid(pid, &status, 0) > 0) {
+			switch (WTERMSIG(status)) {
+				case 0:
+				break;
+				case SIGSEGV:
+				fprintf(stderr, "Segmentation fault\n");
+				default:
+				goto leave;			
+			}
+			if (WIFEXITED(status) && CONTINUE == WEXITSTATUS(status)) return; 
+		}
+	}
+	leave:
+	exit(1);	
+}			
+
 
 void process_line(char * prog, char * last_line) {
 	char new_prog[PROG_SIZE];
 	bool rerun;	
 	rerun = should_print(last_line);
-	sprintf(new_prog, PROLOGUE "\n%s%s}", prog, last_line);
+	sprintf(new_prog, PROLOGUE "\n%s%sreturn CONTINUE;}", prog, last_line);
 	if (compile(new_prog)) {
 		if (rerun) {
-			sprintf(new_prog, PROLOGUE "\n%srepl_print%s}", prog, last_line);
-			if (compile(new_prog)) run_it();	
+			sprintf(new_prog, PROLOGUE "\n%srepl_print%sreturn CONTINUE;}", prog, last_line);
+			if (compile(new_prog)) run();	
 			else goto err;
 		}
-		else run_it();
+		else run();
 		strcpy(prog + strlen(prog), last_line);
 		return;
 	}

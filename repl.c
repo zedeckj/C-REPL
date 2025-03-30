@@ -6,7 +6,6 @@
 #define MAX_SIZE 1100
 
 #define PROLOGUE "#include \"repl.h\" \n%s \n\nint main(){\n"
-#define run_it() (system("./a.out"), system("rm a.out"))
 
 bool should_print(char * line) {
 	size_t l = strlen(line);
@@ -34,8 +33,6 @@ bool handle_top_macro(char ** line) {
 	return false;
 }
 
-
-
 void run() {
 	pid_t pid = fork();
 	if (pid == 0) {
@@ -45,6 +42,7 @@ void run() {
 	else if (pid > 0) {
 		int status;
 		if (waitpid(pid, &status, 0) > 0) {
+			remove("./a.out");
 			switch (WTERMSIG(status)) {
 				case 0:
 				break;

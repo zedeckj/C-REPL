@@ -68,7 +68,7 @@ int x = 3;
 1 error generated.        
 ```
 
-The REPL can be closed with `exit(int)`, a return statement, or `quit()`. 
+The REPL can be closed with `exit(int)`, a `return` statement, or `quit()`. 
 
 ```
 >> char * str = 0; // or bad malloc

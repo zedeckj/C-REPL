@@ -1,6 +1,6 @@
 A simple REPL-like enviroment I threw together for compiling C JIT. User input is compiled and ran after each line entry.
 
-```
+``` C
 >> char * str = "Hello World!";                                                                                                                                                                             
 >> int x = 10 * 10;                                                                                                                                                                                         
 >> if (x == 100) printf("%s\n", str);                                                                                                                                                                       
@@ -10,7 +10,7 @@ Hello World!
 
 Lines in the form of `(<expression>);` are printed without having to call any IO functions.
 
-```
+``` C
 >> int x;                                                                                                                                                                                                   
 >> x = 1 + 2 + 3 * 5;                                                                                                                                                                                       
 >> (x);                                                                                                                                                                                                     
@@ -28,7 +28,7 @@ Works for strings too!
 
 This expression form is still compiled normally, with side effects and mutation occuring as expected:
 
-```
+``` C
 >> int x = 0;                                                                                                                                                                                               
 >> (x = 1);                                                                                                                                                                                                 
 1                                                                                                                                                                                                           
@@ -37,7 +37,7 @@ This expression form is still compiled normally, with side effects and mutation 
 >>           
 ```
 
-```
+``` C
 >> (printf("What does printf return anyways?\n"));                                                                                                                                                          
 What does printf return anyways?                                                                                                                                                                            
 33                                                                                                                                                                                                          
@@ -46,7 +46,7 @@ What does printf return anyways?
 
 Compilation errors gracefully exit the REPL without anything exploding:
 
-```
+``` C
 >> int x = 3;                                                                                                                                                                                               
 >> int y = 2;                                                                                                                                                                                               
 >> int x = 1;                                                                                                                                                                                               
@@ -59,7 +59,7 @@ int x = 3;
 1 error generated.   
 ```
 
-```
+``` C
 >> char a = 'a'; // Now I know what a equals                                                                                                                                                                
 >> (a + b);                                                                                                                                                                                                 
 <stdin>:6:6: error: use of undeclared identifier 'b'                                                                                                                                                        
@@ -70,7 +70,7 @@ int x = 3;
 
 The REPL can be closed with `exit(int)`, a `return` statement, or `quit()`. 
 
-```
+``` C
 >> char * str = 0; // or bad malloc
 >> if (!str) quit();  
 
@@ -81,7 +81,7 @@ A plain keyboard interrupt works as well.
 
 By default, everything is run in the `main` function. This leads to defining top level declarations causing an error.
 
-```
+``` C
 >> int foo(int x) { return x * 2; }                                                                                                                                                                         
 <stdin>:5:16: error: function definition is not allowed here                                                                                                                                                
 int foo(int x) { return x * 2; }                                                                                                                                                                            
@@ -91,7 +91,7 @@ int foo(int x) { return x * 2; }
 
 To get around this, the preprocessor is extended with the directive `#top`
 
-```
+``` C
 >> #top int add1(int x) { return x + 1; }
 >> (add1(2));
 3
@@ -100,7 +100,7 @@ To get around this, the preprocessor is extended with the directive `#top`
 
 Other preprocessor directives are put outside of main as well, so `#include` works as one would hope.
 
-```
+``` C
 >> (LLONG_MAX);
 <stdin>:6:2: error: use of undeclared identifier 'LLONG_MAX'
 (LLONG_MAX);
@@ -108,7 +108,7 @@ Other preprocessor directives are put outside of main as well, so `#include` wor
 1 error generated.
 ```
 
-```
+``` C
 >> #include <limits.h>
 >> (LLONG_MAX);  
 9223372036854775807

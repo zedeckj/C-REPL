@@ -22,7 +22,7 @@ Lines in the form of `(<expression>);` are printed without having to call any IO
 61.200001                                                                                                                                                                                                   
 >> char * str = "Works for strings too!";                                                                                                                                                                   
 >> (str);                                                                                                                                                                                                   
-Works for strings too!
+"Works for strings too!"
 >>
 ```
 
@@ -44,8 +44,7 @@ What does printf return anyways?
 >>      
 ```
 
-Compilation errors gracefully exit the REPL without anything exploding:
-
+Compilation errors lead to the previous line being ignored, and the REPL remaining open.
 ``` C
 >> int x = 3;                                                                                                                                                                                               
 >> int y = 2;                                                                                                                                                                                               
@@ -57,6 +56,11 @@ int x = 1;
 int x = 3;                                                                                                                                                                                                  
     ^                                                                                                                                                                                                       
 1 error generated.   
+
+>> (x);
+
+3
+
 ```
 
 ``` C
@@ -66,6 +70,8 @@ int x = 3;
 (a + b);                                                                                                                                                                                                    
      ^                                                                                                                                                                                                      
 1 error generated.        
+
+>>
 ```
 
 The REPL can be closed with `exit(int)`, a `return` statement, or `quit()`. 

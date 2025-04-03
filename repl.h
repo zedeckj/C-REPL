@@ -9,11 +9,17 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <signal.h> 
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define CONTINUE 206
 #define ENDP "\nreturn CONTINUE;}"
 #define TOPMACRO "#top"
 
+#define _INT_COLOR ""
+//"\033[0;35m"
+#define _RST_COLOR "" 
+//"\033[0m" 
 
 #define repl_print(X) _Generic((X), int: print_int, \
                               default: print_pointer, \
@@ -32,18 +38,19 @@
 															double: print_float, \
 															float: print_float)(X) 
 
-int print_longlong_uint(unsigned long long l) {return printf("%llu\n", l); }
-int print_uint(unsigned int i) { return printf("%u\n", i); }
-int print_short_uint(unsigned short s) { return printf("%hu\n", s);}
-int print_long_uint(unsigned long l) { return printf("%lu\n", l); }
-int print_long(long int l) {return printf("%ld\n", l); }
-int print_longlong(long long int l) {return printf("%lld\n", l);}
-int print_short(short int s) {return printf("%hi\n", s); }
-int print_int(int i){ return printf("%d\n", i); }
-int print_float(float f){ return printf("%f\n", f); }
-int print_str(char * s){ return printf("%s\n", s); }
-int print_char(char c) { return printf("%c\n", c); }
-int print_pointer(void * p){ return printf("%p\n", p); }
+int print_longlong_uint(unsigned long long l) {
+	return printf(_INT_COLOR "%llullu\n" _RST_COLOR, l); }
+int print_uint(unsigned int i) { return printf(_INT_COLOR "%uu\n" _RST_COLOR, i); }
+int print_short_uint(unsigned short s) { return printf(_INT_COLOR "%huhu\n" _RST_COLOR, s);}
+int print_long_uint(unsigned long l) { return printf(_INT_COLOR "%lulu\n" _RST_COLOR, l); }
+int print_long(long int l) {return printf(_INT_COLOR "%ldl\n" _RST_COLOR, l); }
+int print_longlong(long long int l) {return printf(_INT_COLOR "%lldll\n" _RST_COLOR, l);}
+int print_short(short int s) {return printf(_INT_COLOR "%hih\n" _RST_COLOR, s); }
+int print_int(int i){ return printf(_INT_COLOR "%d\n" _RST_COLOR, i); }
+int print_float(float f){ return printf(_INT_COLOR "%ff\n" _RST_COLOR, f); }
+int print_str(char * s){ return printf(_INT_COLOR "\"%s\"\n" _RST_COLOR, s); }
+int print_char(char c) { return printf(_INT_COLOR "'%c'\n" _RST_COLOR, c); }
+int print_pointer(void * p){ return printf(_INT_COLOR "%p\n" _RST_COLOR, p); }
 int print_unknown(void *err){ return fprintf(stderr, "ERROR: Unknown type\n"); exit(1); }
 
 void quit() {

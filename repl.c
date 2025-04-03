@@ -1,15 +1,17 @@
 #include "repl.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #define BUFFER_SIZE 256
 #define PROG_SIZE 5000
 #define HEADER_SIZE 5000
 #define MAX_SIZE 1100
-
+#define loop for(;;)
 #define PROLOGUE "#include \"repl.h\" \n%s \n\nint main(){\n"
 
 bool should_print(char * line) {
 	size_t l = strlen(line);
-	return (line[0] == '(' && line[l - 3] == ')');
+	return (line[0] == '(' && line[l - 2] == ')');
 }
 
 bool compile(char * prog) {
@@ -58,7 +60,7 @@ void run() {
 	exit(1);	
 }			
 
-void format_prog(char * new_prog, 
+bool format_prog(char * new_prog, 
 								char * header,
 								char * body,
 								char * last_line, 
@@ -76,42 +78,44 @@ void format_prog(char * new_prog,
 	else
 	sprintf(new_prog, PROLOGUE "\n%s%s" ENDP, 
 									header, body, last_line);
-	if (!added) {
-		strcpy(body + strlen(body), last_line);
-	}
+	return added;
 }
+
 
 void process_line(char * header, char * body, char * last_line) {
 	char new_prog[MAX_SIZE];
 	bool rerun;	
 	rerun = should_print(last_line);
-	format_prog(new_prog, header,body, last_line, false);
+	bool added = format_prog(new_prog, header,body, last_line, false);
 	if (compile(new_prog)) {
 		if (rerun) {
 			format_prog(new_prog, header, body, last_line, true);
 			if (compile(new_prog)) run();	
-			else goto err;
+		}
+		if (!added) {
+			strcpy(body + strlen(body), last_line);
 		}
 		else run();
 		return;
 	}
-
-	err:
-		exit(1);
 }	
 
-int main(int argc, char **argv) {
-	
-	char buffer[BUFFER_SIZE] = {0};
+void move_down(int x, int y) {
+	return;
+}
+
+int main(int argc, char **argv) {	
 	char body[PROG_SIZE] = {0};
 	char header[HEADER_SIZE] = {0};
-	do {
-		printf("\033[38;5;87m>>\033[0m ");
-		memset(buffer, 0, BUFFER_SIZE);
-		if (fgets(buffer, BUFFER_SIZE, stdin)){
-			process_line(header, body, buffer);
+	using_history();	
+	loop {
+		char *line = readline("\033[38;5;87m>>\033[0m ");
+		if (line && *line) {
+			process_line(header, body, line);
 		}
-	} while (!feof(stdin));
+		add_history(line);
+	}
 	return 0;
 }
+
 

@@ -73,10 +73,10 @@ bool format_prog(char * new_prog,
 			sprintf(new_prog, PROLOGUE "\n%s" ENDP, header, body);
 	}
 	else if (print) 
-	sprintf(new_prog, PROLOGUE "\n%srepl_print%s" ENDP, 
+	sprintf(new_prog, PROLOGUE "\n%s\nrepl_print%s" ENDP, 
 									header, body, last_line);
 	else
-	sprintf(new_prog, PROLOGUE "\n%s%s" ENDP, 
+	sprintf(new_prog, PROLOGUE "\n%s\n%s" ENDP, 
 									header, body, last_line);
 	return added;
 }
@@ -93,6 +93,7 @@ void process_line(char * header, char * body, char * last_line) {
 			if (compile(new_prog)) run();	
 		}
 		if (!added) {
+			strcat(last_line, "\n");
 			strcpy(body + strlen(body), last_line);
 		}
 		else run();

@@ -7,7 +7,7 @@
 #define HEADER_SIZE 5000
 #define MAX_SIZE 1100
 #define loop for(;;)
-#define PROLOGUE "#include \"repl.h\" \n%s \n\nint main(){\n"
+#define PROLOGUE "#include \"repl.h\" \n%s \n\nint main(){\n#line 1 \"crepl\"\n"
 
 bool should_print(char * line) {
 	size_t l = strlen(line);
@@ -70,13 +70,13 @@ bool format_prog(char * new_prog,
 	if ((added = is_macro(last_line))) {
 			handle_top_macro(&last_line);
 			strcpy(header + strlen(header), last_line);
-			sprintf(new_prog, PROLOGUE "\n%s" ENDP, header, body);
+			sprintf(new_prog, PROLOGUE "%s" ENDP, header, body);
 	}
 	else if (print) 
-	sprintf(new_prog, PROLOGUE "\n%s\nrepl_print%s" ENDP, 
+	sprintf(new_prog, PROLOGUE "%srepl_print%s" ENDP, 
 									header, body, last_line);
 	else
-	sprintf(new_prog, PROLOGUE "\n%s\n%s" ENDP, 
+	sprintf(new_prog, PROLOGUE "%s%s" ENDP, 
 									header, body, last_line);
 	return added;
 }
